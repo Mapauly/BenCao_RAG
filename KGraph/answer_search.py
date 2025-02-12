@@ -5,7 +5,7 @@ class AnswerSearcher:
     def __init__(self):
         self.g = Graph(
             "bolt://localhost:7687",  # 使用 bolt 协议连接
-            auth=("neo4j", "ypnpqac101BIN")  # 传递用户名和密码
+            auth=("neo4j", "12345678")  # 传递用户名和密码
         )
     # def __init__(self):
     #     self.g = Graph(

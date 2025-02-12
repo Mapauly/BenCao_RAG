@@ -5,6 +5,7 @@ class QuestionClassifier:
     def __init__(self):
         cur_dir = '/'.join(os.path.abspath(__file__).split('/')[:-1])
         #　特征词路径
+<<<<<<< Updated upstream
         self.disease_path = os.path.join(cur_dir, 'QASystemOnMedicalKG/dict/disease.txt')
         self.department_path = os.path.join(cur_dir, 'QASystemOnMedicalKG/dict/department.txt')
         self.check_path = os.path.join(cur_dir, 'QASystemOnMedicalKG/dict/check.txt')
@@ -13,6 +14,16 @@ class QuestionClassifier:
         self.producer_path = os.path.join(cur_dir, 'QASystemOnMedicalKG/dict/producer.txt')
         self.symptom_path = os.path.join(cur_dir, 'QASystemOnMedicalKG/dict/symptom.txt')
         self.deny_path = os.path.join(cur_dir, 'QASystemOnMedicalKG/dict/deny.txt')
+=======
+        self.disease_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph/dict/disease.txt')
+        self.department_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph/dict/department.txt')
+        self.check_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph\dict\check.txt')
+        self.drug_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph/dict/drug.txt')
+        self.food_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph/dict/food.txt')
+        self.producer_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph/dict/producer.txt')
+        self.symptom_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph/dict/symptom.txt')
+        self.deny_path = os.path.join(cur_dir, 'F:\code\Github\BenCao_RAG\KGraph/dict/deny.txt')
+>>>>>>> Stashed changes
         # 加载特征词
         self.disease_wds= [i.strip() for i in open(self.disease_path, encoding='utf-8') if i.strip()]
         self.department_wds= [i.strip() for i in open(self.department_path, encoding='utf-8') if i.strip()]

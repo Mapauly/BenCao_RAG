@@ -59,7 +59,7 @@ class Basic:
 
 
 enhanced_graph = Neo4jGraph(url="bolt://localhost:7687", username="neo4j",
-                            password="your_password", enhanced_schema=True)
+                            password="12345678", enhanced_schema=True)
 
 if __name__ == "__main__":
     obj = Basic()

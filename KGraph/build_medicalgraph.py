@@ -5,10 +5,10 @@ from py2neo import Graph,Node
 class MedicalGraph:
     def __init__(self):
         cur_dir = '/'.join(os.path.abspath(__file__).split('/')[:-1])
-        self.data_path = os.path.join(cur_dir, 'data/medical.json')
+        self.data_path = os.path.join(cur_dir, './data/medical.json')
         self.g = Graph(
             "bolt://localhost:7687",  # 使用 bolt 协议连接
-            auth=("neo4j", "ypnpqac101BIN")  # 传递用户名和密码
+            auth=("neo4j", "12345678")  # 传递用户名和密码
         )
 
     '''读取文件'''

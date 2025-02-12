@@ -3,12 +3,12 @@ import openai
 import random
 import streamlit as st
 from datetime import datetime
+from openai import OpenAIError
 
-#decorator
+# decorator
 def enable_chat_history(func):
-    if os.environ.get("OPENAI_API_KEY"):
-
-        # to clear chat history after swtching chatbot
+    def execute(*args, **kwargs):
+        # to clear chat history after switching chatbot
         current_page = func.__qualname__
         if "current_page" not in st.session_state:
             st.session_state["current_page"] = current_page
@@ -17,7 +17,7 @@ def enable_chat_history(func):
                 st.cache_resource.clear()
                 del st.session_state["current_page"]
                 del st.session_state["messages"]
-            except:
+            except KeyError:
                 pass
 
         # to show chat history on ui
@@ -26,7 +26,6 @@ def enable_chat_history(func):
         for msg in st.session_state["messages"]:
             st.chat_message(msg["role"]).write(msg["content"])
 
-    def execute(*args, **kwargs):
         func(*args, **kwargs)
     return execute
 
@@ -41,31 +40,29 @@ def display_msg(msg, author):
     st.chat_message(author).write(msg)
 
 def configure_openai():
-    openai_api_key = ""
-    # openai_api_base = ""
-    st.session_state['OPENAI_API_KEY'] = openai_api_key
-    # st.session_state['OPENAI_API_BASE'] = openai_api_base
-    os.environ['OPENAI_API_KEY'] = openai_api_key
-    # os.environ["OPENAI_API_BASE"] = openai_api_base
-    model = "gpt-3.5-turbo"
-    try:
-        client = openai.OpenAI()
-        available_models = [{"id": i.id, "created":datetime.fromtimestamp(i.created)} for i in client.models.list() if str(i.id).startswith("gpt")]
-        available_models = sorted(available_models, key=lambda x: x["created"])
-        available_models = [i["id"] for i in available_models]
+    # 安全获取API密钥
+    dashscope_api_key = os.getenv("DASHSCOPE_API_KEY")
+    if not dashscope_api_key:
+        st.error("Missing DashScope API key in secrets")
+        st.stop()
 
-        # model = st.sidebar.selectbox(
-        #     label="Model",
-        #     options=available_models,
-        #     index=available_models.index(st.session_state['OPENAI_MODEL']) if 'OPENAI_MODEL' in st.session_state else 0
-        # )
-        model = "gpt-3.5-turbo"
-        st.session_state['OPENAI_MODEL'] = model
-    except openai.AuthenticationError as e:
-        st.error(e.body["message"])
+    st.session_state['DASHSCOPE_API_KEY'] = dashscope_api_key
+    os.environ['OPENAI_API_KEY'] = dashscope_api_key
+
+    # 配置自定义API端点
+    api_base = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+    try:
+        client = openai.OpenAI(
+            api_key=dashscope_api_key,
+            base_url=api_base,
+        )
+        # 直接指定支持的模型列表
+        model = "qwen-plus"
+        return model
+    except OpenAIError as e:
+        st.error(f"OpenAI API Error: {e}. Please check your API key and try again.")
         st.stop()
     except Exception as e:
-        print(e)
-        st.error("Something went wrong. Please try again later.")
+        st.error(f"Unexpected error: {str(e)}")
         st.stop()
-    return model
